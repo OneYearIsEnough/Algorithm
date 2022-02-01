@@ -30,7 +30,7 @@ def bottomupMergeSort(nums):
 				j += 1
 
 	n = len(nums)
-	aux = [0 for _ in range(len(nums))]
+	aux = [-1 for _ in range(n)]
 	sz = 1
 	while sz < n:
 		i = 0
