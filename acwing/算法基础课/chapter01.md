@@ -312,3 +312,151 @@ int main() {
 }
 ```
 
+# 二分
+
+## [数的范围](https://www.acwing.com/problem/content/791/)
+
+给定一个按照升序排列的长度为 n 的整数数组，以及 q 个查询。
+
+对于每个查询，返回一个元素 k 的起始位置和终止位置（位置从 0 开始计数）。
+
+如果数组中不存在该元素，则返回 `-1`。
+
+- 输入格式
+
+第一行包含整数 n 和 q，表示数组长度和询问个数。
+
+第二行包含 n 个整数（均在 1∼10000 范围内），表示完整数组。
+
+接下来 q 行，每行包含一个整数 k，表示一个询问元素。
+
+- 输出格式
+
+共 q 行，每行包含两个整数，表示所求元素的起始位置和终止位置。
+
+如果数组中不存在该元素，则返回 `-1`。
+
+- 数据范围
+
+1≤n≤100000
+1≤q≤10000
+1≤k≤10000
+
+- 输入样例：
+
+```
+6 3
+1 2 2 3 3 4
+3
+4
+5
+```
+
+- 输出样例：
+
+```
+3 4
+5 5
+-1 -1
+```
+
+==代码==
+
+二分查找模板还是不太熟练呀，写了挺长时间。。
+
+```c++
+# define PII pair<int, int>
+
+#include <iostream>
+#include <utility>
+using namespace std;
+
+const int N = 100010;
+int nums[N];
+int n, q;
+
+PII find(int nums[], int _l, int _r, int num) {
+    // 找左边界
+    int l = _l, r = _r;
+    while (l < r) {
+        int m = l + (r - l) / 2;
+        if (nums[m] < num) l = m + 1;
+        else r = m;
+    }
+    // 无效
+    if (nums[l] != num) return {-1, -1};
+    int l_res = l;
+    // 找右边界
+    l = _l, r = _r;
+    while (l < r) {
+        int m = l + (r - l + 1) / 2;
+        if (num < nums[m]) r = m - 1;
+        else l = m;
+    }
+    return {l_res, l};
+}
+
+int main() {
+    cin >> n >> q;
+    for (int i = 0; i < n; ++i) cin >> nums[i];
+    for (int i = 0; i < q; ++i) {
+        int num;
+        cin >> num;
+        PII res = find(nums, 0, n - 1, num);
+        cout << res.first << " " << res.second << endl;
+    }
+    return 0;
+}
+```
+
+## [数的三次方根✅](https://www.acwing.com/problem/content/792/)
+
+给定一个浮点数 n，求它的三次方根。
+
+- 输入格式
+
+共一行，包含一个浮点数 n。
+
+- 输出格式
+
+共一行，包含一个浮点数，表示问题的解。
+
+注意，结果保留 6 位小数。
+
+- 数据范围
+
+−10000≤n≤10000
+
+- 输入样例：
+
+```
+1000.00
+```
+
+- 输出样例：
+
+```
+10.000000
+```
+
+==代码==
+
+```c++
+#include <iostream>
+using namespace std;
+
+double n;
+
+int main() {
+    cin >> n;
+    double l = -10000, r = 10000;
+    while (r - l >= 10e-8) {  // 注意精度是放在while循环条件里的，并且要/100保证精度稳妥
+        double m = (r + l) / 2;
+        if (m * m * m <= n) l = m;
+        else r = m;
+    }
+    printf("%lf", l);
+    return 0;
+}
+```
+
