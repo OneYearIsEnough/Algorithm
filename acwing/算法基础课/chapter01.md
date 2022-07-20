@@ -460,3 +460,65 @@ int main() {
 }
 ```
 
+# 高精度
+
+## [高精度加法](https://www.acwing.com/problem/content/793/)
+
+给定两个正整数（不含前导 0），计算它们的和。
+
+- 输入格式
+
+共两行，每行包含一个整数。
+
+- 输出格式
+
+共一行，包含所求的和。
+
+- 数据范围
+
+1≤整数长度≤100000
+
+- 输入样例：
+
+```
+12
+23
+```
+
+- 输出样例：
+
+```
+35
+```
+
+==代码==
+
+```c++
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+string a, b;
+
+string add(const string& a, const string& b) {
+    string res;
+    int i = a.size() - 1, j = b.size() - 1, c = 0;
+    while (i >= 0 || j >= 0 || c > 0) {
+        if (i >= 0) c += a[i--] - '0';
+        if (j >= 0) c += b[j--] - '0';
+        res += c % 10 + '0';
+        c /= 10;
+    }
+    reverse(res.begin(), res.end());
+    return res;
+}
+
+int main() {
+    cin >> a >> b;
+    
+    cout << add(a, b) << endl;
+    return 0;
+}
+```
+
