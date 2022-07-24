@@ -1058,3 +1058,198 @@ int main() {
 
 
 
+# 双指针算法
+
+## [最长连续不重复子序列](https://www.acwing.com/problem/content/801/)
+
+给定一个长度为 n 的整数序列，请找出最长的不包含重复的数的连续区间，输出它的长度。
+
+- 输入格式
+
+第一行包含整数 n。
+
+第二行包含 n 个整数（均在 0∼10e5 范围内），表示整数序列。
+
+- 输出格式
+
+共一行，包含一个整数，表示最长的不包含重复的数的连续区间的长度。
+
+- 数据范围
+
+1≤n≤10e5
+
+- 输入样例：
+
+```
+5
+1 2 2 3 5
+```
+
+- 输出样例：
+
+```
+3
+```
+
+==代码==
+
+```c++
+#include <iostream>
+using namespace std;
+
+const int N = 100010;
+int nums[N], record[N];
+int n;
+
+int main() {
+    cin >> n;
+    for (int i = 0; i < n; ++i) cin >> nums[i];
+    
+    int j = 0;
+    int res = 0;
+    for (int i = 0; i < n; ++i) {
+        ++record[nums[i]];
+        while (record[nums[i]] > 1) --record[nums[j++]];
+        res = max(res, i - j + 1);
+    }
+    cout << res << endl;
+    return 0;
+}
+```
+
+## [数组元素的目标和](https://www.acwing.com/problem/content/802/)
+
+给定两个升序排序的有序数组 A 和 B，以及一个目标值 x。
+
+数组下标从 0 开始。
+
+请你求出满足 A[i]+B[j]=x 的数对 (i,j)。
+
+数据保证有唯一解。
+
+- 输入格式
+
+第一行包含三个整数 n,m,x，分别表示 A 的长度，B 的长度以及目标值 x。
+
+第二行包含 n 个整数，表示数组 A。
+
+第三行包含 m 个整数，表示数组 B。
+
+- 输出格式
+
+共一行，包含两个整数 i 和 j。
+
+- 数据范围
+
+数组长度不超过 10e5。
+同一数组内元素各不相同。
+1≤数组元素≤10e9
+
+- 输入样例：
+
+```
+4 5 6
+1 2 4 7
+3 4 6 8 9
+```
+
+- 输出样例：
+
+```
+1 1
+```
+
+==代码==
+
+```c++
+// 双指针注意方向互斥就好了
+
+#include <iostream>
+using namespace std;
+
+const int N = 100010;
+int A[N], B[N];
+int n, m, x;
+
+int main() {
+    cin >> n >> m >> x;
+    for (int i = 0; i < n; ++i) cin >> A[i];
+    for (int i = 0; i < m; ++i) cin >> B[i];
+    
+    int l = 0, r = m - 1;
+    while (A[l] + B[r] != x) {
+        if (A[l] + B[r] < x) ++l;
+        else --r;
+    }
+    cout << l << " " << r << endl;
+    return 0;
+}
+```
+
+## [判断子序列✅](https://www.acwing.com/problem/content/2818/)
+
+给定一个长度为 nn 的整数序列 a1,a2,…,an 以及一个长度为 m 的整数序列 b1,b2,…,bm。
+
+请你判断 a 序列是否为 b 序列的子序列。
+
+子序列指序列的一部分项按**原有次序排列**而得的序列，例如序列 {a1,a3,a5 是序列 {a1,a2,a3,a4,a5 的一个子序列。
+
+- 输入格式
+
+第一行包含两个整数 n,m。
+
+第二行包含 n 个整数，表示 a1,a2,…,ana。
+
+第三行包含 m 个整数，表示 b1,b2,…,bm。
+
+- 输出格式
+
+如果 a 序列是 b 序列的子序列，输出一行 `Yes`。
+
+否则，输出 `No`。
+
+- 数据范围
+
+1≤n≤m≤10e5,
+−10e9≤ai,bi≤10e9
+
+- 输入样例：
+
+```
+3 5
+1 3 5
+1 2 3 4 5
+```
+
+- 输出样例：
+
+```
+Yes
+```
+
+==代码==
+
+```c++
+#include <iostream>
+using namespace std;
+
+const int N = 100010;
+int A[N], B[N];
+int n, m;
+
+int main() {
+    cin >> n >> m;
+    for (int i = 0; i < n; ++i) cin >> A[i];
+    for (int i = 0; i < m; ++i) cin >> B[i];
+    
+    // 经典双指针，双指针一定能够保证有解
+    int i = 0, j = 0;
+    while (i < n && j < m) {
+        if (A[i] == B[j]) ++i;
+        ++j;  // 无论是否匹配成功，j都要往后走一次
+    }
+    cout << (i == n ? "Yes" : "No") << endl;
+    return 0;
+}
+```
+
